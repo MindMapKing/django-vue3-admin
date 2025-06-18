@@ -5,3 +5,4 @@
 .history/
 .vscode/
 web/package-lock.json
+/memory-bank

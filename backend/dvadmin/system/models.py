@@ -512,63 +512,224 @@ class ApiWhiteList(CoreModel):
 
 
 class SystemConfig(CoreModel):
+    """
+    系统配置模型类 - Django ORM模型定义
+    
+    这个类确实定义了数据库表字段与Python对象属性的映射关系。
+    Django ORM (Object-Relational Mapping) 使用这种方式实现：
+    1. 数据库表结构定义
+    2. Python对象与数据库记录的双向映射
+    3. 数据验证和类型转换
+    4. 数据库操作的高级抽象
+    
+    当Django执行migration时，会根据这个模型类的字段定义在数据库中创建对应的表和列。
+    
+    数据库表名：table_prefix + "system_config" (通常为 "dvadmin_system_config")
+    
+    字段名定义：
+    1. parent - 父级配置项ID (外键关联自身)
+    2. title - 配置项标题 (varchar(50))
+    3. key - 配置项键名 (varchar(100), 带索引)
+    4. value - 配置项的值 (JSON格式)
+    5. sort - 排序序号 (integer)
+    6. status - 启用状态 (boolean)
+    7. data_options - 数据选项 (JSON格式)
+    8. form_item_type - 表单类型 (integer, 带choices选项)
+    9. rule - 校验规则 (JSON格式)
+    10. placeholder - 提示信息 (varchar(50))
+    11. setting - 其他配置 (JSON格式)
+    
+    继承字段 (来自CoreModel基类):
+    - id - 主键ID (自增)
+    - create_datetime - 创建时间
+    - update_datetime - 更新时间
+    - description - 描述信息
+    - creator_id - 创建者ID
+    - modifier_id - 修改者ID
+    """
+    
+    # 系统配置的父子关系字段定义
+    # 字段名：parent
+    # 数据库列名：parent_id
+    # 数据类型：integer (外键)
     parent = models.ForeignKey(
-        to="self",
-        verbose_name="父级",
-        on_delete=models.CASCADE,
-        db_constraint=False,
-        null=True,
-        blank=True,
-        help_text="父级",
+        to="self",                    # 指向自身模型，实现自关联
+        verbose_name="父级",           # 在Django管理后台显示的字段名称
+        on_delete=models.CASCADE,     # 删除父级时，级联删除所有子级配置
+        db_constraint=False,          # 不在数据库层面创建外键约束，由Django应用层管理
+        null=True,                    # 数据库层面允许为空值
+        blank=True,                   # 表单验证层面允许为空
+        help_text="父级",             # 字段的帮助文本，用于表单提示
     )
+    
+    # 配置项标题字段
+    # 字段名：title
+    # 数据库列名：title
+    # 数据类型：varchar(50)
     title = models.CharField(max_length=50, verbose_name="标题", help_text="标题")
+    
+    # 配置项键名字段
+    # 字段名：key
+    # 数据库列名：key
+    # 数据类型：varchar(100) 带索引
     key = models.CharField(max_length=100, verbose_name="键", help_text="键", db_index=True)
+    
+    # 配置项的值字段
+    # 字段名：value
+    # 数据库列名：value
+    # 数据类型：JSON
     value = models.JSONField(max_length=100, verbose_name="值", help_text="值", null=True, blank=True)
+    
+    # 排序字段
+    # 字段名：sort
+    # 数据库列名：sort
+    # 数据类型：integer
     sort = models.IntegerField(default=0, verbose_name="排序", help_text="排序", blank=True)
+    
+    # 启用状态字段
+    # 字段名：status
+    # 数据库列名：status
+    # 数据类型：boolean
     status = models.BooleanField(default=True, verbose_name="启用状态", help_text="启用状态")
+    
+    # 数据选项字段
+    # 字段名：data_options
+    # 数据库列名：data_options
+    # 数据类型：JSON
     data_options = models.JSONField(verbose_name="数据options", help_text="数据options", null=True, blank=True)
+    
+    # 表单类型选择列表 - 定义了支持的所有表单控件类型
+    # 这是Django choices的标准用法：元组列表，每个元组包含(存储值, 显示名称)
     FORM_ITEM_TYPE_LIST = (
-        (0, "text"),
-        (1, "datetime"),
-        (2, "date"),
-        (3, "textarea"),
-        (4, "select"),
-        (5, "checkbox"),
-        (6, "radio"),
-        (7, "img"),
-        (8, "file"),
-        (9, "switch"),
-        (10, "number"),
-        (11, "array"),
-        (12, "imgs"),
-        (13, "foreignkey"),
-        (14, "manytomany"),
-        (15, "time"),
+        (0, "text"),         # 文本输入框
+        (1, "datetime"),     # 日期时间选择器
+        (2, "date"),         # 日期选择器
+        (3, "textarea"),     # 多行文本域
+        (4, "select"),       # 下拉选择框
+        (5, "checkbox"),     # 复选框
+        (6, "radio"),        # 单选按钮
+        (7, "img"),          # 图片上传
+        (8, "file"),         # 文件上传
+        (9, "switch"),       # 开关切换
+        (10, "number"),      # 数字输入
+        (11, "array"),       # 数组类型
+        (12, "imgs"),        # 多图片上传
+        (13, "foreignkey"),  # 外键关联
+        (14, "manytomany"),  # 多对多关联
+        (15, "time"),        # 时间选择器
     )
+    
+    # 表单类型字段
+    # 字段名：form_item_type
+    # 数据库列名：form_item_type
+    # 数据类型：integer
     form_item_type = models.IntegerField(
         choices=FORM_ITEM_TYPE_LIST, verbose_name="表单类型", help_text="表单类型", default=0, blank=True
     )
+    
+    # 校验规则字段
+    # 字段名：rule
+    # 数据库列名：rule
+    # 数据类型：JSON
     rule = models.JSONField(null=True, blank=True, verbose_name="校验规则", help_text="校验规则")
+    
+    # 提示信息字段
+    # 字段名：placeholder
+    # 数据库列名：placeholder
+    # 数据类型：varchar(50)
     placeholder = models.CharField(max_length=50, null=True, blank=True, verbose_name="提示信息", help_text="提示信息")
+    
+    # 其他配置字段
+    # 字段名：setting
+    # 数据库列名：setting
+    # 数据类型：JSON
     setting = models.JSONField(null=True, blank=True, verbose_name="配置", help_text="配置")
 
     class Meta:
+        """
+        Django Model的元数据配置类
+        
+        Meta类是Django模型的内置配置类，用于定义模型的各种元数据选项，包括：
+        
+        1. 数据库相关配置：
+           - db_table: 指定数据库表名，而不是使用Django的默认命名规则
+           - ordering: 指定查询时的默认排序规则
+           - indexes: 定义数据库索引
+           - constraints: 定义数据库约束
+        
+        2. 管理界面配置：
+           - verbose_name: 模型在Django管理后台的单数显示名称
+           - verbose_name_plural: 模型在Django管理后台的复数显示名称
+        
+        3. 查询和权限配置：
+           - permissions: 自定义权限
+           - default_permissions: 默认权限设置
+           - get_latest_by: 指定获取最新记录的字段
+        
+        4. 唯一性约束：
+           - unique_together: 联合唯一约束
+        
+        Meta类的作用：
+        - 不会创建数据库字段，只是提供模型的元信息
+        - 影响Django ORM的行为和数据库表的结构
+        - 控制Django管理后台的显示效果
+        - 定义数据库层面的约束和索引
+        """
+        
+        # 指定数据库表名，table_prefix是全局变量，用于统一表名前缀
         db_table = table_prefix + "system_config"
+        
+        # Django管理后台显示的模型名称（单数形式）
         verbose_name = "系统配置表"
+        
+        # Django管理后台显示的模型名称（复数形式）
+        # 这里设置为与单数相同，符合中文习惯
         verbose_name_plural = verbose_name
+        
+        # 默认排序规则 - 按sort字段升序排列
+        # 所有查询操作默认会按这个顺序返回结果
         ordering = ("sort",)
+        
+        # 联合唯一约束 - key和parent_id的组合必须唯一
+        # 这确保了在同一个父级下，不能有重复的key值
+        # 但不同父级下可以有相同的key值
         unique_together = (("key", "parent_id"),)
 
     def __str__(self):
+        """
+        模型的字符串表示方法
+        
+        当需要将模型实例转换为字符串时调用（如在Django管理后台显示）
+        返回配置项的标题作为对象的可读表示
+        """
         return f"{self.title}"
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """
+        重写保存方法，添加配置更新后的缓存刷新逻辑
+        
+        当系统配置被保存（新增或修改）时，自动刷新应用程序中的配置缓存，
+        确保程序使用的是最新的配置数据
+        """
+        # 调用父类的保存方法，执行实际的数据库保存操作
         super().save(force_insert, force_update, using, update_fields)
-        dispatch.refresh_system_config()  # 有更新则刷新系统配置
+        
+        # 刷新系统配置缓存，确保应用程序获取到最新配置
+        dispatch.refresh_system_config()
 
     def delete(self, using=None, keep_parents=False):
+        """
+        重写删除方法，添加配置删除后的缓存刷新逻辑
+        
+        当系统配置被删除时，自动刷新应用程序中的配置缓存，
+        确保被删除的配置不再被程序使用
+        """
+        # 调用父类的删除方法，执行实际的数据库删除操作
         res = super().delete(using, keep_parents)
+        
+        # 刷新系统配置缓存，清除已删除的配置项
         dispatch.refresh_system_config()
+        
         return res
 
 

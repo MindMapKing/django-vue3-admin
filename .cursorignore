@@ -1,0 +1,13 @@
+# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
+/node_modules
+/dist
+/build
+/public
+/static
+/media
+/uploads
+/logs
+/cache
+/temp
+/docker_env
+/web
