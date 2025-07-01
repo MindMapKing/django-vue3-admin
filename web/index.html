@@ -1,31 +1,70 @@
 <!DOCTYPE html>
+<!-- HTML5 文档类型声明，告诉浏览器使用 HTML5 标准解析文档 -->
+
 <html lang="zh-CN">
+<!-- HTML 根元素，lang="zh-CN" 指定页面主要语言为简体中文，有助于SEO和无障碍访问 -->
+
 	<head>
+		<!-- 文档头部，包含页面元数据，不会在页面上显示 -->
+		
+		<!-- 字符编码声明，使用 UTF-8 编码支持中文和其他国际字符 -->
 		<meta charset="utf-8" />
+		
+		<!-- IE 兼容性设置，强制 IE 使用最新的渲染引擎 -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		
+		<!-- 响应式设计视口设置，确保在移动设备上正确显示 -->
+		<!-- width=device-width: 宽度等于设备宽度 -->
+		<!-- initial-scale=1.0: 初始缩放比例为1:1 -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		
+		<!-- SEO 关键词元标签，帮助搜索引擎理解页面内容 -->
 		<meta
 			name="keywords"
 			content="django-vue3-admin"
 		/>
+		
+		<!-- SEO 页面描述元标签，在搜索结果中显示，详细介绍项目特性 -->
 		<meta
 			name="description"
 			content="django-vue-admin 基于RBAC模型的权限控制的一整套基础开发平台，权限粒度达到列级别，前后端分离，后端采用django + django-rest-framework，前端采用基于 vue3 + CompositionAPI + typescript + vite + element plus"
 		/>
+		
+		<!-- 网站图标链接，显示在浏览器标签页和收藏夹中 -->
 		<link rel="icon" href="/favicon.ico" />
+		
+		<!-- 页面标题，显示在浏览器标签页上 -->
 		<title>django-vue-admin</title>
 	</head>
+	
 	<body>
-    <div id="app"></div>
-    <script>
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?9ba8fc809b5584167a2fb9b31bb3970c";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
-    <script type="module" src="/src/main.ts"></script>
+		<!-- 页面主体内容区域 -->
+		
+		<!-- Vue 应用挂载点，Vue 会将整个应用渲染到这个 div 中 -->
+		<!-- id="app" 与 main.ts 中的 createApp().mount('#app') 对应 -->
+		<div id="app"></div>
+		
+		<!-- 百度统计代码，用于网站访问数据分析 -->
+		<script>
+			// 百度统计全局变量初始化
+			var _hmt = _hmt || [];
+			
+			// 立即执行函数，异步加载百度统计脚本
+			(function() {
+				// 创建 script 元素用于加载百度统计代码
+				var hm = document.createElement("script");
+				// 百度统计脚本地址，包含网站的唯一标识ID
+				hm.src = "https://hm.baidu.com/hm.js?9ba8fc809b5584167a2fb9b31bb3970c";
+				// 获取页面中第一个 script 标签
+				var s = document.getElementsByTagName("script")[0];
+				// 将百度统计脚本插入到第一个 script 标签之前
+				s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+		
+		<!-- Vue 应用入口文件加载 -->
+		<!-- type="module" 表示这是一个 ES6 模块，支持 import/export 语法 -->
+		<!-- src="/src/main.ts" 指向 Vue 应用的主入口文件 -->
+		<script type="module" src="/src/main.ts"></script>
 	</body>
 </html>
