@@ -49,16 +49,27 @@ export function isObjectValueEqual<T>(a: T, b: T): boolean {
  * @returns
  */
 export function removeDuplicate(arr: EmptyArrayType, attr?: string) {
+	// 检查数组是否为空，如果为空则直接返回原数组
+	// Object.keys()` 是一个 JavaScript 内置方法，用于获取对象自身可枚举属性的键名数组。
+	// 在这个上下文中，它被用来检查数组是否为空，但这种方式存在问题。
 	if (!Object.keys(arr).length) {
 		return arr;
 	} else {
+		// 判断是否需要根据指定属性去重（数组对象去重）
 		if (attr) {
+			// 创建一个空对象用于记录已出现的属性值
 			const obj: EmptyObjectType = {};
+			// 使用 reduce 方法遍历数组，进行去重操作
 			return arr.reduce((cur: EmptyArrayType[], item: EmptyArrayType) => {
+				// 检查当前项的指定属性值是否已存在：
+				// - 如果已存在则跳过（返回空字符串）
+				// - 如果不存在则标记为已存在，并将当前项添加到结果数组中
 				obj[item[attr]] ? '' : (obj[item[attr]] = true && item[attr] && cur.push(item));
+				// 返回累积的结果数组
 				return cur;
-			}, []);
+			}, []); // 初始值为空数组
 		} else {
+			// 对于普通数组，使用 Set 数据结构自动去重，然后展开为新数组
 			return [...new Set(arr)];
 		}
 	}

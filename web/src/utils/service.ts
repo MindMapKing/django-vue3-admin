@@ -185,6 +185,12 @@ function createRequestFunction(service: any) {
 			// @ts-ignore
 			configDefault.headers.Authorization = 'JWT ' + token;
 		}
+		// Object.assign 的作用：
+		// 1. 将一个或多个源对象的所有可枚举属性复制到目标对象
+		// 2. 这里将 config 对象的属性合并到 configDefault 对象中
+		// 3. 如果属性名相同，后面的对象会覆盖前面的对象的属性值
+		// 4. 返回修改后的目标对象（configDefault）
+		// 实际效果：用户传入的 config 参数会覆盖默认配置 configDefault 中的同名属性
 		return service(Object.assign(configDefault, config));
 	};
 }

@@ -1,3 +1,8 @@
+// 这是ES6模块的混合导入语法
+// mitt 是默认导出(default export)，可以直接导入并命名
+// { Emitter } 是命名导出(named export)，需要用花括号解构导入
+// 一个模块可以同时有默认导出和命名导出，所以可以在一条语句中同时导入两者
+// 语法格式：import 默认导出名, { 命名导出1, 命名导出2 } from '模块路径';
 import mitt, { Emitter } from 'mitt';
 
 export interface TaskProps {

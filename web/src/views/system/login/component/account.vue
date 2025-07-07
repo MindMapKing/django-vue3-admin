@@ -8,12 +8,17 @@
 				</template>
 			</el-input>
 		</el-form-item>
+		<!-- #prefix 和 #suffix 是 Element Plus 输入框组件的插槽(slot) -->
+		<!-- #prefix: 在输入框前面添加图标或其他内容，通常用于显示输入类型的图标 -->
+		<!-- #suffix: 在输入框后面添加图标或其他内容，通常用于操作按钮或状态图标 -->
 		<el-form-item class="login-animation2" prop="password">
 			<el-input :type="isShowPassword ? 'text' : 'password'" :placeholder="$t('message.account.accountPlaceholder2')"
 				v-model="ruleForm.password">
+				<!-- prefix 插槽：在输入框左侧显示锁定图标，表示这是密码输入框 -->
 				<template #prefix>
 					<el-icon class="el-input__icon"><ele-Unlock /></el-icon>
 				</template>
+				<!-- suffix 插槽：在输入框右侧显示眼睛图标，点击可以切换密码的显示/隐藏状态 -->
 				<template #suffix>
 					<i class="iconfont el-input__icon login-content-password"
 						:class="isShowPassword ? 'icon-yincangmima' : 'icon-xianshimima'"
