@@ -5,6 +5,15 @@ import { request } from '/@/utils/service';
 import { auth } from "/@/utils/authFunction";
 
 //此处为crudOptions配置
+// 这里使用了TypeScript的解构赋值语法和类型注解
+// { crudExpose }: 这是ES6的解构赋值，从传入的参数对象中直接提取出crudExpose属性
+// { crudExpose: CrudExpose }: 这是TypeScript的类型注解，定义了参数对象的结构
+//   - 表示传入的参数是一个对象，这个对象必须包含一个名为crudExpose的属性
+//   - 该属性的类型必须是CrudExpose类型
+// 相当于传统写法：
+// function (params: { crudExpose: CrudExpose }) {
+//   const crudExpose = params.crudExpose;
+// }
 export default function ({ crudExpose }: { crudExpose: CrudExpose }): CreateCrudOptionsRet {
     const pageRequest = async (query: any) => {
         return await api.GetList(query);

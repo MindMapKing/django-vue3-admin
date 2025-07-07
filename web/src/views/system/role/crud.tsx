@@ -11,6 +11,14 @@ import { nextTick, computed } from 'vue';
  * @param context：index传递过来的自定义参数
  * @returns
  */
+// 这里的 {} 是 ES6 的解构赋值语法
+// 它从传入的参数对象中提取出 crudExpose 和 context 两个属性
+// 相当于：
+// function (props: CreateCrudOptionsProps) {
+//   const crudExpose = props.crudExpose;
+//   const context = props.context;
+// }
+// 解构赋值让代码更简洁，直接获取需要的属性而不需要通过 props.xxx 的方式访问
 export const createCrudOptions = function ({ crudExpose, context }: CreateCrudOptionsProps): CreateCrudOptionsRet {
 	const pageRequest = async (query: any) => {
 		return await api.GetList(query);
