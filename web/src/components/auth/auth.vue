@@ -87,8 +87,31 @@ import { useUserInfo } from '/@/stores/userInfo';
 const props = defineProps({
 	value: {
 		type: String,                    // 权限标识符，对应后端权限系统中的权限码
-		default: () => '',               // 默认为空字符串，防止undefined错误
+		default: ()=>'',                     // 默认为空字符串，防止undefined错误
 		// 示例值：'user:add', 'role:edit', 'system:config'
+		
+		/**
+		 * default 属性值的两种写法区别：
+		 * 
+		 * 1. default: '' 
+		 *    - 直接赋值：适用于基本数据类型（string, number, boolean）
+		 *    - 性能更好：不需要函数调用开销
+		 *    - 推荐用法：对于简单值，直接赋值即可
+		 * 
+		 * 2. default: () => ''
+		 *    - 函数返回：适用于引用数据类型（object, array）或需要动态计算的值
+		 *    - 避免共享：每次调用都返回新的实例，防止组件间共享同一引用
+		 *    - 必要场景：当默认值是对象或数组时，必须使用函数形式
+		 * 
+		 * 示例对比：
+		 * - 基本类型：default: '' ✓ (推荐)
+		 * - 对象类型：default: () => ({}) ✓ (必须)
+		 * - 数组类型：default: () => [] ✓ (必须)
+		 * 
+		 * 错误示例：
+		 * - default: {} ✗ (所有组件实例共享同一对象引用，会导致数据污染)
+		 * - default: [] ✗ (所有组件实例共享同一数组引用，会导致数据污染)
+		 */
 	},
 });
 

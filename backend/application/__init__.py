@@ -12,4 +12,19 @@
 # Django starts so that shared_task will use this app.
 from .celery import app as celery_app
 
+# __all__ 详解：
+# __all__ = ('celery_app',) 是一个元组，定义了当使用 from application import * 时
+# 能够被导入的公共接口。
+# 
+# 具体作用：
+# 1. 控制导入范围：只有列在 __all__ 中的名称才会被 import * 导入
+# 2. 明确公共API：告诉使用者这个模块对外提供哪些接口
+# 3. 避免内部实现泄露：防止私有变量或内部函数被意外导入
+#
+# 在这个例子中：
+# - celery_app 是从 .celery 模块导入的 Celery 应用实例
+# - 通过 __all__ 声明，使得其他模块可以通过 from application import * 获取到 celery_app
+# - 这对于 Django + Celery 集成很重要，确保 Celery 应用在 Django 启动时被正确初始化
+# 
+# 注意：元组只有一个元素时，末尾的逗号不能省略，否则会被解释为普通的括号表达式
 __all__ = ('celery_app',)
